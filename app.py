@@ -12,7 +12,6 @@ def create_app():
     flapp = flask.Flask(__name__)
     redis_url = os.getenv('REDIS_URL')
 
-    urlparse.uses_netloc.append('redis')
     url = urlparse.urlparse(redis_url)
     conn = redis.Redis(host=url.hostname, port=url.port, db=0, password=url.password)
     sirp = sirope.Sirope(conn)
