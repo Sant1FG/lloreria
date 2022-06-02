@@ -21,6 +21,7 @@ def create_app():
 
 
 global usr_login
+usr_login = None
 app, srp, lm = create_app()
 
 
