@@ -1,14 +1,21 @@
+import os
+import redis
 import flask
 import flask_login
 from flask import Flask, json
 import sirope
 from model.llorodto import LloroDto
 from model.userdto import UserDto
-
+from urllib.parse import urlparse
 
 def create_app():
     flapp = flask.Flask(__name__)
-    sirp = sirope.Sirope()
+    redis_url = os.getenv('REDISTOGO_URL')
+
+    urlparse.uses_netloc.append('redis')
+    url = urlparse.urlparse(redis_url)
+    conn = redis.Redis(host=url.hostname, port=url.port, db=0, password=url.password)
+    sirp = sirope.Sirope(conn)
     lgmg = flask_login.login_manager.LoginManager()
 
     flapp.config.from_file("config.json", json.load)
