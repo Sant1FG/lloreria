@@ -131,10 +131,6 @@ def home():
     """Devuelve la plantilla base del home de la aplicacion"""
     usr = UserDto.find(srp, usr_login)
 
-    if not usr:
-        flask.flash("Es necesario estar logueado")
-        return flask.redirect("/login")
-
     lloros = list(srp.load_all(LloroDto))
     lloros.sort(key=lambda x: x.time, reverse=True)
     sust = {
@@ -150,9 +146,6 @@ def save_lloro():
     """Metodo encargado de almacenar la nueva publicación en la base de datos"""
     txt = flask.request.form.get("inputLloro")
     usr = UserDto.find(srp, usr_login)
-    if not usr:
-        flask.flash("Es necesario estar logueado")
-        return flask.redirect("/login")
 
     if not txt:
         flask.flash("No puedo crear un lloro vacio")
@@ -169,9 +162,6 @@ def save_lloro():
 def user_profile(profile_id):
     """Recupero una lista de post pertenecientes al usuario logueado"""
     usr = UserDto.find(srp, profile_id)
-    if not usr:
-        flask.flash("Es necesario estar logueado")
-        return flask.redirect("/login")
 
     misLloros = list(srp.filter(LloroDto, lambda m: m.author == profile_id))
     misLloros.sort(key=lambda x: x.time, reverse=True)
@@ -191,10 +181,6 @@ def delete():
     usr = UserDto.find(srp, usr_login)
     safe_oid = flask.request.form.get("safe_oid")
     oid = srp.oid_from_safe(safe_oid)
-
-    if not usr:
-        flask.flash("Es necesario estar logueado")
-        return flask.redirect("/login")
 
     if not oid:
         flask.flash("El oid no existe")
