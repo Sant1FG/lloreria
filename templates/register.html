@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Página de registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="bg-image d-flex flex-column  align-items-center mb-5 pb-5"
+  style="background-image: url('https://wallpaperaccess.com/full/2217435.jpg');height: 100vh;" >
+    <div class="mt-5 pt-5 mb-5 pb-5"></div>
+    <div class=" align-self-center mb-1 pd-5 pb-3"> <h2 class="mt-n1 fw-bold text-white fs-1">Encantados de conocerte</h2></div>
+    <form action="/register" method="post">
+  <div class="mb-3">
+   <label for="inputLogin" class="form-label text-white">Nombre de usuario</label>
+   <input type="text" class="form-control " id="inputLogin" name="inputLogin">
+  </div>
+  <div class="mb-3">
+    <label for="inputEmail" class="form-label text-white">Correo electrónico</label>
+    <input type="email" class="form-control" id="inputEmail" name="inputEmail">
+  </div>
+  <div class="mb-3">
+    <label for="inputPassword" class="form-label text-white">Contraseña</label>
+    <input type="password" class="form-control" id="inputPassword" name="inputPassword">
+  </div>
+  <button type="submit" class="btn btn-primary" formmethod="post">Registrarse</button>
+        <input type="button" class="btn btn-secondary ms-5" onClick="javascript:history.go(-1);" value="Volver">
+</form>
+<div id=”dvErrorMsg”  class="mt-5" style="font-weight: bold; color: white; background-color:
+red">
+    {% with error_messages = get_flashed_messages() %}
+        {% if error_messages %}
+            {% for message in error_messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+ </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

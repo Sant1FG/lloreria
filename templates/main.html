@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido a la llorería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<div class="bg-image d-flex flex-column mb-5"
+  style="background-image: url('https://wallpaperaccess.com/full/2217435.jpg');height: 100vh;" >
+    <div class="p-2 align-self-center"> <h1 class="mt-5 fw-bold text-white fs-1 shadow-lg">Bienvenido a la llorería <img class="img-fluid" style="height:45px" src="static/logo.png" alt="Logo web"> </h1> </div>
+    <div class="p-2 align-self-center mb-5 pd-5"> <h2 class="mt-2 fw-bold text-white fs-2">La página web donde compartir tus penas</h2></div>
+    <div class="d-flex justify-content-around p-2">
+        <div class="mt-5">
+            <h3 class="mt-5 text-white fs-2 mb-2">Entra con tu cuenta</h3>
+            <form action="/login" method="get">
+            <button type="submit"  formmethod="get" class="btn btn-primary btn-lg w-100 mt-2">Entra</button>
+            </form>
+        </div>
+        <div class="mt-5">
+            <h3 class="mt-5 text-white fs-2 mb-2">Unete a la llorería</h3>
+            <form action="/register" method="get">
+            <button type="submit" formmethod="get" class="btn btn-primary btn-lg w-100 mt-2">Registrate</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

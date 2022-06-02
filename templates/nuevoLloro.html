@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}
+  <form action="/save_lloro" method="post">
+  <div class="mb-3">
+    <label for="inputLloro" class="form-label text-white">Publicar un nuevo lloro</label>
+      <textarea class="form-control" id="inputLloro" name="inputLloro" placeholder="¿Algo que quieras compartir?"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary" formmethod="post">Publicar</button>
+</form>
+{% endblock %}
