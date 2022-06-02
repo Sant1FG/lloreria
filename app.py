@@ -170,7 +170,7 @@ def user_profile(profile_id):
         flask.flash("Es necesario estar logueado")
         return flask.redirect("/login")
 
-    misLloros = list(sirope.Sirope().filter(LloroDto, lambda m: m.author == profile_id))
+    misLloros = list(srp.filter(LloroDto, lambda m: m.author == profile_id))
     misLloros.sort(key=lambda x: x.time, reverse=True)
 
     sust = {
