@@ -2,11 +2,7 @@ import flask
 import flask_login
 from flask import Flask, json
 import sirope
-from flask_login import login_manager
-
-import home_view
-import profile_view
-import search_view
+from model.llorodto import LloroDto
 from model.userdto import UserDto
 
 
@@ -21,9 +17,6 @@ def create_app():
 
 
 app, srp, lm = create_app()
-app.register_blueprint(home_view.home_blprint)
-app.register_blueprint(profile_view.profile_blprint)
-app.register_blueprint(search_view.search_blprint)
 global usr_login
 usr_login = None
 
@@ -126,6 +119,110 @@ def login_user():
     global usr_login
     usr_login = usr.login
     return flask.redirect("/home")
+
+@flask_login.login_required
+@app.route("/home")
+def home():
+    """Devuelve la plantilla base del home de la aplicacion"""
+    usr = UserDto.find(srp, usr_login)
+
+    if not usr:
+        flask.flash("Es necesario estar logueado")
+        return flask.redirect("/login")
+
+    lloros = list(srp.load_all(LloroDto))
+    lloros.sort(key=lambda x: x.time, reverse=True)
+    sust = {
+        "usr": usr,
+        "lloros_list": lloros,
+    }
+    return flask.render_template("base.html", **sust)
+
+
+@flask_login.login_required
+@app.route("/home/save_lloro", methods=["POST"])
+def save_lloro():
+    """Metodo encargado de almacenar la nueva publicación en la base de datos"""
+    txt = flask.request.form.get("inputLloro")
+    usr = UserDto.find(srp, usr_login)
+    if not usr:
+        flask.flash("Es necesario estar logueado")
+        return flask.redirect("/login")
+
+    if not txt:
+        flask.flash("No puedo crear un lloro vacio")
+        return flask.redirect("/home")
+
+    lloroOID = srp.save(LloroDto(txt, usr.login))
+    usr.add_lloro_oid(lloroOID)
+    srp.save(usr)
+    return flask.redirect("/home")
+
+@flask_login.login_required
+@app.route('/profile/<profile_id>', methods=["GET"])
+def user_profile(profile_id):
+    """Recupero una lista de post pertenecientes al usuario logueado"""
+    usr = UserDto.find(srp, profile_id)
+    if not usr:
+        flask.flash("Es necesario estar logueado")
+        return flask.redirect("/login")
+
+    misLloros = list(sirope.Sirope().filter(LloroDto, lambda m: m.author == profile_id))
+    misLloros.sort(key=lambda x: x.time, reverse=True)
+
+    sust = {
+        "usr": usr,
+        "lloros_list": misLloros,
+        "oids": {i.__oid__: srp.safe_from_oid(i.__oid__) for i in misLloros}
+    }
+    return flask.render_template("profile.html", **sust)
+
+
+@flask_login.login_required
+@app.route('/profile/delete', methods=["POST"])
+def delete():
+    """Recibe un oid seguro que emplea para eliminar el lloro seleccionado por el usuario"""
+    usr = UserDto.find(srp,usr_login)
+    safe_oid = flask.request.form.get("safe_oid")
+    oid = srp.oid_from_safe(safe_oid)
+
+    if not usr:
+        flask.flash("Es necesario estar logueado")
+        return flask.redirect("/login")
+
+    if not oid:
+        flask.flash("El oid no existe")
+        return flask.redirect("/home")
+
+    usr.oids_lloros.remove(oid)
+    srp.save(usr)
+    srp.delete(oid)
+    return flask.redirect("/profile/" + usr_login)
+
+
+@flask_login.login_required
+@app.route("/search/results", methods=["POST"])
+def results():
+    """Devuelve las ultimas 5 publicaciones realizadas por el usuario buscado"""
+    sust= {}
+    msgs = []
+    txt_search = flask.request.form.get("inputSearch")
+    usr = srp.find_first(UserDto, lambda u: txt_search.strip() in u.login)
+
+    if usr is not None:
+        msgs = list(srp.multi_load(usr.oids_lloros))
+        msgs.sort(key=lambda x: x.time, reverse=True)
+        sust = {
+            "usr": usr,
+            "lloros_list": msgs,
+        }
+    else:
+        usr = UserDto.find(srp,usr_login)
+        sust = {
+            "usr": usr,
+        }
+
+    return flask.render_template("search_results.html", **sust)
 
 
 if __name__ == '__main__':

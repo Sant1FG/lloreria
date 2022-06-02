@@ -2,19 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Perfil de usuario</title>
+    <title>Perfil del usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-dark">
   <div class="container-fluid" style="border: 0 !important; border-bottom: 3px solid #fff;">
-      <a href="{{ url_for('home.home') }}">
-        <img class="navbar-toggler-icon" style="height:45px;width: 50px" src="static/logo.png" alt="Logo web">
+      <a href="{{ url_for('home') }}">
+        <img class="navbar-toggler-icon" style="height:45px;width: 50px" alt="Logo web" src="/static/logo.png">
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item ms-5">
-          <a class="nav-link text-white fs-5" href="{{ url_for('profile.user_profile',profile_id=usr.login)}}">Mis lloros</a>
+          <a class="nav-link text-white fs-5" href="{{ url_for('user_profile',profile_id=usr.login)}}">Mis lloros</a>
         </li>
          <li class="nav-item ms-5 d-flex ">
           <form action="/logout" method="post">
@@ -50,7 +50,7 @@ red">
                         <div class=" text-white h5 p-2">{{ lloro.author }} <form action="/profile/delete" method="post">
                             <input type="text" style="display: none" name="safe_oid" id="safe_oid"
                                    value="{{ oids[lloro.__oid__] }}"/>
-                            <button action="submit"><img class="icon" style="height:20px;width: 20px" src="static/trash.png" alt="Delete"></button>
+                            <button action="submit"><img class="icon" style="height:20px;width: 20px" src="/static/trash.png" alt="Delete"></button>
                         </form></div>
                         <div class=" text-white p-2">{{ lloro.msg }}</div>
 

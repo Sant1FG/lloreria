@@ -8,13 +8,13 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-dark">
   <div class="container-fluid" style="border: 0 !important; border-bottom: 3px solid #fff;">
-      <a href="{{ url_for('home.home') }}">
+      <a href="{{ url_for('home') }}">
         <img class="navbar-toggler-icon" style="height:45px;width: 50px" src="static/logo.png" alt="Logo web">
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item ms-5">
-          <a class="nav-link text-white fs-5" href="{{ url_for('profile.user_profile',profile_id=usr.login)}}">Mis lloros</a>
+          <a class="nav-link text-white fs-5" href="{{ url_for('user_profile',profile_id=usr.login)}}">Mis lloros</a>
         </li>
          <li class="nav-item ms-5 d-flex ">
           <form action="/logout" method="post">
