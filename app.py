@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 def create_app():
     flapp = flask.Flask(__name__)
     r = redis.from_url(os.environ.get("REDIS_URL"))
-    sirp = sirope.Sirope()
+    sirp = sirope.Sirope(r)
     lgmg = flask_login.login_manager.LoginManager()
 
     flapp.config.from_file("config.json", json.load)
