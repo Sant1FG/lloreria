@@ -8,6 +8,7 @@ from model.llorodto import LloroDto
 from model.userdto import UserDto
 from urllib.parse import urlparse
 
+
 def create_app():
     flapp = flask.Flask(__name__)
     r = redis.from_url(os.environ.get("REDIS_URL"))
@@ -19,9 +20,8 @@ def create_app():
     return flapp, sirp, lgmg
 
 
-app, srp, lm = create_app()
 global usr_login
-usr_login = None
+app, srp, lm = create_app()
 
 
 @app.route('/')
@@ -123,6 +123,7 @@ def login_user():
     usr_login = usr.login
     return flask.redirect("/home")
 
+
 @flask_login.login_required
 @app.route("/home")
 def home():
@@ -161,6 +162,7 @@ def save_lloro():
     srp.save(usr)
     return flask.redirect("/home")
 
+
 @flask_login.login_required
 @app.route('/profile/<profile_id>', methods=["GET"])
 def user_profile(profile_id):
@@ -185,7 +187,7 @@ def user_profile(profile_id):
 @app.route('/profile/delete', methods=["POST"])
 def delete():
     """Recibe un oid seguro que emplea para eliminar el lloro seleccionado por el usuario"""
-    usr = UserDto.find(srp,usr_login)
+    usr = UserDto.find(srp, usr_login)
     safe_oid = flask.request.form.get("safe_oid")
     oid = srp.oid_from_safe(safe_oid)
 
@@ -207,7 +209,7 @@ def delete():
 @app.route("/search/results", methods=["POST"])
 def results():
     """Devuelve las ultimas 5 publicaciones realizadas por el usuario buscado"""
-    sust= {}
+    sust = {}
     msgs = []
     txt_search = flask.request.form.get("inputSearch")
     usr = srp.find_first(UserDto, lambda u: txt_search.strip() in u.login)
@@ -220,7 +222,7 @@ def results():
             "lloros_list": msgs,
         }
     else:
-        usr = UserDto.find(srp,usr_login)
+        usr = UserDto.find(srp, usr_login)
         sust = {
             "usr": usr,
         }
